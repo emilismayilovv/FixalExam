@@ -1,0 +1,46 @@
+﻿@using FINALEXAM.Models;
+@model HomeIcon
+
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Basic form elements</h4>
+            <p class="card-description">
+                Basic form elements
+            </p>
+            <form class="forms-sample" method="post">
+                <div class="form-group">
+                    <label asp-for="Title">Title</label>
+                    <input asp-for=Title class="form-control" placeholder="Title">
+                    <span asp-validation-for="Title"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MainIcon">MainIcon</label>
+                    <input asp-for=MainIcon class="form-control" placeholder="MainIcon">
+                    <span asp-validation-for="MainIcon"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Number">Number</label>
+                    <input asp-for=Number class="form-control" placeholder="Number">
+                    <span asp-validation-for="Number"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Letter">Letter</label>
+                    <input asp-for=Letter class="form-control" placeholder="Letter">
+                    <span asp-validation-for="Letter"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Plus">Plus</label>
+                    <input asp-for=Plus class="form-control" placeholder="Plus">
+                    <span asp-validation-for="Plus"></span>
+                </div>
+
+
+
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <button asp-controller="homeicon" asp-action="index" class="btn btn-light">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>

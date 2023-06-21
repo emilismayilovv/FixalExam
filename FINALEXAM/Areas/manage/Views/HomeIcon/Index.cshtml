@@ -1,0 +1,71 @@
+﻿@using FINALEXAM.Models;
+@model List<HomeIcon>
+
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <a asp-controller="homeicon" asp-action="create">Create HomeIcon</a>
+        <div class="card-body">
+            <h4 class="card-title">Striped Table</h4>
+            <p class="card-description">
+                Add class <code>.table-striped</code>
+            </p>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                MainIcon
+                            </th>
+                            <th>
+                                Number
+                            </th>
+                            <th>
+                                Letter
+                            </th>
+                            <th>
+                                Plus
+                            </th>
+                            <th>
+                                Setting
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @item.Title
+                                </td>
+                                <td>
+                                    @item.MainIcon
+                                </td>
+                                <td>
+                                    @item.Number
+                                </td>
+                                <td>
+                                    @item.Letter
+                                </td>
+                                <td>
+                                    @item.Plus
+                                </td>
+
+                                <td>
+                                    <a asp-controller="homeicon" asp-action="update" asp-route-id="@item.Id">Update</a>
+                                    <a asp-controller="homeicon" asp-action="delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

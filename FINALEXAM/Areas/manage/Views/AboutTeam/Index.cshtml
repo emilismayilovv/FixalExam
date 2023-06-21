@@ -1,0 +1,58 @@
+﻿@using FINALEXAM.Models;
+@model List<AboutTeam>
+
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <a asp-controller="aboutteam" asp-action="create">Create Agent</a>
+        <div class="card-body">
+            <h4 class="card-title">Striped Table</h4>
+            <p class="card-description">
+                Add class <code>.table-striped</code>
+            </p>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Image
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            
+                            <th>
+                                Position
+                            </th>
+                            <th>
+                                Setting
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="py-1">
+                                    <img src="assets/img/@item.Image" />
+                                </td>
+                                <td>
+                                    @item.Name
+                                </td>
+                                
+                                <td>
+                                    @item.AboutPosition.Name
+                                </td>
+                                <td>
+                                    <a asp-controller="aboutteam" asp-action="update" asp-route-id="@item.Id">Update</a>
+                                    <a asp-controller="aboutteam" asp-action="delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

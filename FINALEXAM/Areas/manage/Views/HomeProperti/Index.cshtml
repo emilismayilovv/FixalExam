@@ -1,0 +1,88 @@
+﻿@using FINALEXAM.Models;
+@model List<HomeProperti>
+
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <a asp-controller="homeproperti" asp-action="create">Create Properti</a>
+        <div class="card-body">
+            <h4 class="card-title">Striped Table</h4>
+            <p class="card-description">
+                Add class <code>.table-striped</code>
+            </p>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Image
+                            </th>
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                BathRoomNumbers
+                            </th>
+                            <th>
+                                BedRoomNumbers
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th>
+                                SquareFT
+                            </th>
+
+                            <th>
+                                Agent
+                            </th>
+                            <th>
+                                Setting
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="py-1">
+                                    <img src="assets/img/@item.Image" />
+                                </td>
+                                <td>
+                                    @item.Title
+                                </td>
+                                <td>
+                                    @item.Description
+                                </td>
+                                <td>
+                                    @item.BathRoomNumbers
+                                </td>
+                                <td>
+                                    @item.BedRoomNumbers
+                                </td>
+                                <td>
+                                    @item.Price
+                                </td>
+                                <td>
+                                    @item.SquareFT
+                                </td>
+
+                                <td>
+                                    @item.AboutTeam.Name
+                                </td>
+                                <td>
+                                    <a asp-controller="homeproperti" asp-action="update" asp-route-id="@item.Id">Update</a>
+                                    <a asp-controller="homeproperti" asp-action="delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
