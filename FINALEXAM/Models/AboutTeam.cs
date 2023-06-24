@@ -11,7 +11,7 @@ namespace FINALEXAM.Models
         public string Email { get; set; }
         public string Phone { get; set; }
         public AboutPosition? AboutPosition { get; set; }
-        public int AboutPositionId { get; set; }
+        public int? AboutPositionId { get; set; }
         public List<HomeProperti>? HomeProperti { get; set; }
 
         [NotMapped]

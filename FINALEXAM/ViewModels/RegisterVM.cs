@@ -22,6 +22,7 @@ namespace FINALEXAM.ViewModels
         [DataType(DataType.Password)]
         [Compare(nameof(Password))]
         public string CheckPassword { get; set; }
+        public int? PositionId { get; set; }
         public string Phone { get; set; }
         public bool IsSeller { get; set; }
         public string? Image { get; set; }

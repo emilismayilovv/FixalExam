@@ -1,4 +1,7 @@
-﻿    <!-- Utilize Cart Menu Start -->
+﻿@using FINALEXAM.Models;
+@model List<AboutTeam>  
+  
+<!-- Utilize Cart Menu Start -->
 <div id="ltn__utilize-cart-menu" class="ltn__utilize ltn__utilize-cart-menu">
     <div class="ltn__utilize-menu-inner ltn__scrollbar">
         <div class="ltn__utilize-menu-head">
@@ -8,7 +11,7 @@
         <div class="mini-cart-product-area ltn__scrollbar">
             <div class="mini-cart-item clearfix">
                 <div class="mini-cart-img">
-                    <a href="#"><img src="img/product/1.png" alt="Image"></a>
+                    <a href="#"><img src="~/assets/img/product/1.png" alt="Image"></a>
                     <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
                 </div>
                 <div class="mini-cart-info">
@@ -18,7 +21,7 @@
             </div>
             <div class="mini-cart-item clearfix">
                 <div class="mini-cart-img">
-                    <a href="#"><img src="img/product/2.png" alt="Image"></a>
+                    <a href="#"><img src="~/assets/img/product/2.png" alt="Image"></a>
                     <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
                 </div>
                 <div class="mini-cart-info">
@@ -28,7 +31,7 @@
             </div>
             <div class="mini-cart-item clearfix">
                 <div class="mini-cart-img">
-                    <a href="#"><img src="img/product/3.png" alt="Image"></a>
+                    <a href="#"><img src="~/assets/img/product/3.png" alt="Image"></a>
                     <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
                 </div>
                 <div class="mini-cart-info">
@@ -38,7 +41,7 @@
             </div>
             <div class="mini-cart-item clearfix">
                 <div class="mini-cart-img">
-                    <a href="#"><img src="img/product/4.png" alt="Image"></a>
+                    <a href="#"><img src="~/assets/img/product/4.png" alt="Image"></a>
                     <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
                 </div>
                 <div class="mini-cart-info">
@@ -66,7 +69,7 @@
     <div class="ltn__utilize-menu-inner ltn__scrollbar">
         <div class="ltn__utilize-menu-head">
             <div class="site-logo">
-                <a href="index.html"><img src="img/logo.png" alt="Logo"></a>
+                <a href="index.html"><img src="~/assets/img/logo.png" alt="Logo"></a>
             </div>
             <button class="ltn__utilize-close">×</button>
         </div>
@@ -226,114 +229,29 @@
 <div class="ltn__team-area pt-110--- pb-90">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-4 col-sm-6">
-                <div class="ltn__team-item ltn__team-item-3---">
-                    <div class="team-img">
-                        <img src="img/team/4.jpg" alt="Image">
-                    </div>
-                    <div class="team-info">
-                        <h4><a href="team-details.html">Rosalina D. William</a></h4>
-                        <h6 class="ltn__secondary-color">Real Estate Broker</h6>
-                        <div class="ltn__social-media">
-                            <ul>
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                            </ul>
+
+            @foreach(var item in Model)
+            {
+                <div class="col-lg-4 col-sm-6">
+                    <div class="ltn__team-item ltn__team-item-3---">
+                        <div class="team-img">
+                            <img src="~/assets/img/@item.Image" alt="Image">
+                        </div>
+                        <div class="team-info">
+                            <h4><a href="team-details.html">@item.Name @item.Surname</a></h4>
+                            <h6 class="ltn__secondary-color"></h6>
+                            <div class="ltn__social-media">
+                                <ul>
+                                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-sm-6">
-                <div class="ltn__team-item ltn__team-item-3---">
-                    <div class="team-img">
-                        <img src="img/team/2.jpg" alt="Image">
-                    </div>
-                    <div class="team-info">
-                        <h4><a href="team-details.html">Kelian Anderson</a></h4>
-                        <h6 class="ltn__secondary-color">Selling Agents</h6>
-                        <div class="ltn__social-media">
-                            <ul>
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-6">
-                <div class="ltn__team-item ltn__team-item-3---">
-                    <div class="team-img">
-                        <img src="img/team/3.jpg" alt="Image">
-                    </div>
-                    <div class="team-info">
-                        <h4><a href="team-details.html">Miranda H. Halim</a></h4>
-                        <h6 class="ltn__secondary-color">Property Seller</h6>
-                        <div class="ltn__social-media">
-                            <ul>
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-6">
-                <div class="ltn__team-item ltn__team-item-3---">
-                    <div class="team-img">
-                        <img src="img/team/1.jpg" alt="Image">
-                    </div>
-                    <div class="team-info">
-                        <h4><a href="team-details.html">Damble D. Browni.</a></h4>
-                        <h6 class="ltn__secondary-color">Property Seller</h6>
-                        <div class="ltn__social-media">
-                            <ul>
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-6">
-                <div class="ltn__team-item ltn__team-item-3---">
-                    <div class="team-img">
-                        <img src="img/team/5.jpg" alt="Image">
-                    </div>
-                    <div class="team-info">
-                        <h4><a href="team-details.html">Aiden Benjamin</a></h4>
-                        <h6 class="ltn__secondary-color">Real Estate Broker</h6>
-                        <div class="ltn__social-media">
-                            <ul>
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-6">
-                <div class="ltn__team-item ltn__team-item-3---">
-                    <div class="team-img">
-                        <img src="img/team/6.jpg" alt="Image">
-                    </div>
-                    <div class="team-info">
-                        <h4><a href="team-details.html">James Carter</a></h4>
-                        <h6 class="ltn__secondary-color">Selling Agents</h6>
-                        <div class="ltn__social-media">
-                            <ul>
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
+            
         </div>
     </div>
 </div>

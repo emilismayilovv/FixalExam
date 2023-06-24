@@ -1,5 +1,7 @@
-﻿@using FINALEXAM.ViewModels;
+﻿
+@using FINALEXAM.ViewModels;
 @model RegisterVM
+
 
 
     <!-- Utilize Cart Menu Start -->
@@ -252,8 +254,9 @@
                         <input asp-for="Password" class="form-control" placeholder="Password"/>
                         <input asp-for="CheckPassword" class="form-control" placeholder="ConfirmPassword"/>
                         <input asp-for=Photo class="form-control" placeholder="Photo">
+                        @*<select asp-for="ProfessionId" asp-items="new SelectList(ViewBag.Professions,nameof(Profession.Id),nameof(Profession.Name))"></select>*@
                         <label class="checkbox-inline">
-                            <input asp-for="IsSeller" type="checkbox" value="">
+                            <input asp-for="IsSeller" >
                             Seller
                         </label>
                         

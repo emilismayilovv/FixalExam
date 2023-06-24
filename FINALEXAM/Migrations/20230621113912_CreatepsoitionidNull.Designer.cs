@@ -4,6 +4,7 @@ using FINALEXAM.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FINALEXAM.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230621113912_CreatepsoitionidNull")]
+    partial class CreatepsoitionidNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,14 +168,7 @@ namespace FINALEXAM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HomePropertiId")
                         .HasColumnType("int");
 
                     b.Property<int?>("OrderId")
@@ -183,10 +178,6 @@ namespace FINALEXAM.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("HomePropertiId");
 
                     b.HasIndex("OrderId");
 
@@ -535,25 +526,9 @@ namespace FINALEXAM.Migrations
 
             modelBuilder.Entity("FINALEXAM.Models.BasketItem", b =>
                 {
-                    b.HasOne("FINALEXAM.Models.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FINALEXAM.Models.HomeProperti", "HomeProperti")
-                        .WithMany()
-                        .HasForeignKey("HomePropertiId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FINALEXAM.Models.Order", "Order")
                         .WithMany("BasketItems")
                         .HasForeignKey("OrderId");
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("HomeProperti");
 
                     b.Navigation("Order");
                 });

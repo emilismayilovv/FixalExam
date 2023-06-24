@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using FINALEXAM.Utilities.Extensions;
 using FINALEXAM.DAL;
+using Microsoft.EntityFrameworkCore;
 
 namespace FINALEXAM.Controllers
 {
@@ -24,15 +25,26 @@ namespace FINALEXAM.Controllers
             _env = env;
             _context = context;
         }
-        public IActionResult Register()
+        public IActionResult Index()
         {
+            List<AboutTeam> aboutTeams =  _context.AboutTeams.Include(at => at.AboutPosition).ToList();
+
+            return View(aboutTeams);
+        }
+        public async Task<IActionResult> Register()
+        {
+            ViewBag.AboutPosition = await _context.AboutPositions.ToListAsync();
+
             return View();
         }
+
 
         [HttpPost]
 
         public async Task<IActionResult> Register(RegisterVM newUser)
         {
+            ViewBag.AboutPosition = await _context.AboutPositions.ToListAsync();
+
             if (!ModelState.IsValid) return View();
 
             AppUser member = await _userManager.FindByNameAsync(newUser.Username);
@@ -90,7 +102,7 @@ namespace FINALEXAM.Controllers
 
             if (newUser.IsSeller == true)
             {
-                await _userManager.AddToRoleAsync(member, "seller");
+                await _userManager.AddToRoleAsync(member, UserRole.Seller.ToString());
 
                 AboutTeam team = new AboutTeam
                 {
@@ -108,7 +120,7 @@ namespace FINALEXAM.Controllers
             }
             else
             {
-                await _userManager.AddToRoleAsync(member, "member");
+                await _userManager.AddToRoleAsync(member, UserRole.Member.ToString());
             }
             await _signInManager.SignInAsync(member, true);
 
