@@ -1,6 +1,5 @@
 ﻿@using FINALEXAM.Models;
 @model AboutTeam
-@*@model List<Order>*@
 
 <div class="table-responsive">
     <table class="table">
@@ -10,22 +9,24 @@
                 <th>Date</th>
                 <th>Status</th>
                 <th>Total</th>
-                
+                <th>Edit</th>
+
             </tr>
         </thead>
 
         <tbody>
-            @foreach(var item in Model.Order)
+            @foreach (var item in Model.Order)
             {
                 <tr>
                     <td>1</td>
                     <td>@item.PurchasedAt</td>
                     <td>@item.Status</td>
                     <td>$@item.TotalPrice</td>
+                    <td><a asp-controller="account" asp-action="edit" asp-route-id="@item.Id">Edit</a></td>
                     @*<td><a href="cart.html">View</a></td>*@
                 </tr>
             }
-            
+
         </tbody>
     </table>
 </div>

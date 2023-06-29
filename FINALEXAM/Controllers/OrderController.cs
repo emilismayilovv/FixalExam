@@ -67,7 +67,8 @@ namespace FINALEXAM.Controllers
                 PurchasedAt=DateTime.Now,
                 TotalPrice=total,
                 BasketItems=items,
-                AboutTeamId=id
+                AboutTeamId=id,
+                
             };
 
             await _context.Orders.AddAsync(order);

@@ -1,0 +1,35 @@
+﻿@using FINALEXAM.Models;
+@model Order
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Basic form elements</h4>
+            <p class="card-description">
+                Basic form elements
+            </p>
+            <form class="forms-sample" method="post" enctype="multipart/form-data">
+                
+                <div class="form-group">
+                    <select name="Status">
+                        <option value="Null">Pending</option>
+                        <option value="False">Approved</option>
+                        <option value="True">Pendir</option>
+                    </select>
+
+
+                </div>
+               
+                
+
+
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <button asp-controller="account" asp-action="orderseller" class="btn btn-light">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

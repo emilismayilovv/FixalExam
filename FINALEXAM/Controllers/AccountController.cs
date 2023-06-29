@@ -26,12 +26,56 @@ namespace FINALEXAM.Controllers
             _context = context;
         }
 
-        public IActionResult Order()
+        public async Task<IActionResult> OrderMember()
         {
-            AboutTeam aboutTeam = _context.AboutTeams.Include(at=>at.Order).FirstOrDefault(ab => ab.Username == User.Identity.Name);
-            
+          AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+          List<Order> orders = await _context.Orders.Where(o=>o.AppUserId == user.Id).ToListAsync();
+
+            return View(orders);
+        }
+
+        public async Task<IActionResult> OrderSeller()
+        {
+            AboutTeam aboutTeam = _context.AboutTeams.Include(o=>o.Order).FirstOrDefault(ab => ab.Username == User.Identity.Name);
 
             return View(aboutTeam);
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || id < 1) return BadRequest();
+
+            var existed = await _context.Orders.FirstOrDefaultAsync(b => b.Id == id);
+            if (existed == null) NotFound();
+
+
+
+            return View(existed);
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Edit(Order order)
+        {
+            
+            var result = await _context.Orders.FirstOrDefaultAsync(b => b.Id == order.Id);
+
+            if (result == null)
+            {
+                ModelState.AddModelError("AboutTeamId", "Ixtisas yoxud");
+                return View();
+            }
+
+            
+
+            
+            result.Status= order.Status;
+            
+
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
 
