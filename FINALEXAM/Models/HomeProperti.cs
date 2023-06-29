@@ -13,7 +13,7 @@ namespace FINALEXAM.Models
         public int SquareFT { get;set; }
         public string? Image { get; set; }
         public AboutTeam? AboutTeam { get; set; }
-        public int AboutTeamId { get; set; }
+        public int? AboutTeamId { get; set; }
         [NotMapped]
         public IFormFile Photo { get; set; }
     }

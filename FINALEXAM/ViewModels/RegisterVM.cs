@@ -26,6 +26,7 @@ namespace FINALEXAM.ViewModels
         public string Phone { get; set; }
         public bool IsSeller { get; set; }
         public string? Image { get; set; }
+
         [NotMapped]
         public IFormFile? Photo { get; set; }
 

@@ -33,17 +33,18 @@ namespace FINALEXAM.Controllers
 
 
 
-        public async Task<IActionResult> Checkout()
+        /*public async Task<IActionResult> Checkout()
         {
             AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
             ViewBag.Items = await _context.BasketItems.Where(b => b.AppUserId==user.Id&&b.OrderId==null)
                 .Include(b=>b.HomeProperti).ToListAsync();
              return View();
-        }
+        }*/
+
 
         [HttpPost]
 
-        public async Task<IActionResult> Checkout(OrderVM orderVM)
+        public async Task<IActionResult> Checkout(OrderVM orderVM,int id)
         {
             AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
             List<BasketItem> items=await _context.BasketItems.Where(b => b.AppUserId == user.Id && b.OrderId == null)
@@ -66,6 +67,7 @@ namespace FINALEXAM.Controllers
                 PurchasedAt=DateTime.Now,
                 TotalPrice=total,
                 BasketItems=items,
+                AboutTeamId=id
             };
 
             await _context.Orders.AddAsync(order);

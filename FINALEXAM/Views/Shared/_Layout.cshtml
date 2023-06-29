@@ -1,7 +1,11 @@
-﻿@using FINALEXAM.Services;
+﻿@using FINALEXAM.Models;
+@using FINALEXAM.Services;
+@using Microsoft.AspNetCore.Identity;
 @inject LayoutService service;
+@inject UserManager<AppUser> userManager; 
 
 @{
+    AppUser member = User.Identity.IsAuthenticated ? userManager.Users.FirstOrDefault(x => x.UserName == User.Identity.Name) : null;
 
     Dictionary<string, string> settings = await service.GetSettingsAsync();
     
@@ -173,7 +177,29 @@
                                     <li>
                                         <a href="#"><i class="icon-user"></i></a>
                                         <ul>
-                                            @if (User.Identity.IsAuthenticated)
+                                            @if (member != null)
+                                            {
+                                                if (member.IsSeller == true)
+                                                {
+                                                    <li><a asp-controller="account" asp-action="sellerprofile">@member.Name @member.Surname</a></li>
+                                                    <li><a asp-controller="account" asp-action="logout">LogOut</a></li>
+                                                }
+                                                
+                                                else
+                                                {
+                                                    <li><a asp-controller="account" asp-action="memberprofile">@member.Name @member.Surname</a></li>
+                                                    <li><a asp-controller="account" asp-action="logout">LogOut</a></li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                
+                                                
+                                                    <li><a asp-controller="account" asp-action="login" asp-route-ReturnUrl="@Context.Request.Path.Value" class="nav-link scrollto">Login</a></li>
+                                                    <li><a asp-controller="account" asp-action="register" class="nav-link scrollto">Register</a></li>
+                                                
+                                            }
+                                            @*@if (User.Identity.IsAuthenticated)
                                             {
                                                 <li><a class="nav-link scrollto">@User.Identity.Name</a></li>
                                                 <li><a  asp-controller="account" asp-action="logout">LogOut</a></li>
@@ -182,7 +208,7 @@
                                             {
                                                 <li><a  asp-controller="account" asp-action="login" asp-route-ReturnUrl="@Context.Request.Path.Value" class="nav-link scrollto">Login</a></li>
                                                 <li><a  asp-controller="account" asp-action="register" class="nav-link scrollto">Register</a></li>
-                                            }
+                                            }*@
                                             
                                             
                                         </ul>

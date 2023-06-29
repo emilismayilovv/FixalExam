@@ -1,0 +1,31 @@
+﻿@using FINALEXAM.Models;
+@model AboutTeam
+@*@model List<Order>*@
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach(var item in Model.Order)
+            {
+                <tr>
+                    <td>1</td>
+                    <td>@item.PurchasedAt</td>
+                    <td>@item.Status</td>
+                    <td>$@item.TotalPrice</td>
+                    @*<td><a href="cart.html">View</a></td>*@
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div>

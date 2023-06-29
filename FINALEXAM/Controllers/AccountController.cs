@@ -25,12 +25,88 @@ namespace FINALEXAM.Controllers
             _env = env;
             _context = context;
         }
+
+        public IActionResult Order()
+        {
+            AboutTeam aboutTeam = _context.AboutTeams.Include(at=>at.Order).FirstOrDefault(ab => ab.Username == User.Identity.Name);
+            
+
+            return View(aboutTeam);
+        }
+
+
+
+        public IActionResult MemberProfile()
+        {
+            return View();
+        }
+
+        public IActionResult SellerProfile()
+        {
+            return View();
+        }
+
+
+        public async Task<IActionResult> Dashboard()
+        {
+            ViewBag.AboutTeams = await _context.AboutTeams.ToListAsync();
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> Dashboard(HomeProperti homeProperti)
+        {
+            /*ViewBag.AboutTeams = await _context.AboutTeams.ToListAsync();*/
+
+            
+
+            if (homeProperti == null) return BadRequest();
+
+            if (!homeProperti.Photo.CheckSize(500))
+            {
+                ModelState.AddModelError("Photo", "Olcu boyukdur");
+                return View();
+            }
+            if (!homeProperti.Photo.CheckType("image/"))
+            {
+                ModelState.AddModelError("Photo", "tip sehvdir");
+                return View();
+            }
+
+            homeProperti.Image = await homeProperti.Photo.CreateFileAsync(_env.WebRootPath, "assets/img");
+            AboutTeam aboutTeam = _context.AboutTeams.FirstOrDefault(ab => ab.Username == User.Identity.Name);
+            
+            
+
+            if (aboutTeam == null)
+            {
+                ModelState.AddModelError("AboutTeamId", "Ixtisas yoxud");
+                return View();
+            }
+
+
+            homeProperti.AboutTeamId = aboutTeam.Id;
+
+            await _context.HomeProperties.AddAsync(homeProperti);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+
+
+
         public IActionResult Index()
         {
-            List<AboutTeam> aboutTeams =  _context.AboutTeams.Include(at => at.AboutPosition).ToList();
+            List<AboutTeam> aboutTeams = _context.AboutTeams.Include(at => at.AboutPosition).ToList();
 
             return View(aboutTeams);
         }
+
         public async Task<IActionResult> Register()
         {
             ViewBag.AboutPosition = await _context.AboutPositions.ToListAsync();
@@ -111,7 +187,9 @@ namespace FINALEXAM.Controllers
                     Email = newUser.Email,
                     Phone = newUser.Phone,
                     Image = await newUser.Photo.CreateFileAsync(_env.WebRootPath, "assets/img"),
-                    HomeProperti = new List<HomeProperti>()
+                    HomeProperti = new List<HomeProperti>(),
+                    AboutPositionId=newUser.PositionId,
+                    Username=member.UserName
 
                 };
 

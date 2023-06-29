@@ -660,15 +660,15 @@
                             </div>
                             <ul class="ltn__list-item-2 ltn__list-item-2-before">
                                 <li>
-                                    <span>3 <i class="flaticon-bed"></i></span>
+                                    <span>@item.BedRoomNumbers <i class="flaticon-bed"></i></span>
                                     Bedrooms
                                 </li>
                                 <li>
-                                    <span>2 <i class="flaticon-clean"></i></span>
+                                    <span>@item.BathRoomNumbers <i class="flaticon-clean"></i></span>
                                     Bathrooms
                                 </li>
                                 <li>
-                                    <span>3450 <i class="flaticon-square-shape-design-interface-tool-symbol"></i></span>
+                                    <span>@item.SquareFT <i class="flaticon-square-shape-design-interface-tool-symbol"></i></span>
                                     square Ft
                                 </li>
                             </ul>
@@ -676,10 +676,10 @@
                         <div class="product-info-bottom">
                             <div class="real-estate-agent">
                                 <div class="agent-img">
-                                    <a href="team-details.html"><img src="~/assets/img/blog/author.jpg" alt="#"></a>
+                                    <a href="team-details.html"><img src="~/assets/img/@item.AboutTeam.Image alt="#"></a>
                                 </div>
                                 <div class="agent-brief">
-                                    <h6><a href="team-details.html">William Seklo</a></h6>
+                                    <h6><a href="team-details.html">@item.AboutTeam.Name</a></h6>
                                     <small>Estate Agents</small>
                                 </div>
                             </div>
@@ -696,9 +696,10 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a asp-controller="basket" asp-action="addbasket" asp-route-id="@item.Id" title="AddBasket">
+                                        <form method="post" asp-controller="order" asp-action="checkout" asp-route-id="@item.AboutTeam.Id" title="rent"><button type="submit" class="btn btn-primary me-2">Submit</button></form>
+                                        
                                             <i class="flaticon-add"></i>
-                                        </a>
+                                        
                                     </li>
                                 </ul>
                             </div>
