@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FINALEXAM.Models;
 using FINALEXAM.Utilities.Extensions;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FINALEXAM.Areas.manage.Controllers
 {
@@ -18,10 +19,11 @@ namespace FINALEXAM.Areas.manage.Controllers
             _context = context;
             _env = env;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page)
         {
-
-            var existed = await _context.AboutTeams.Include(b => b.AboutPosition).ToListAsync();
+            ViewBag.Page = page;
+            ViewBag.Total = Math.Ceiling((decimal)_context.HomeProperties.Count() / 6);
+            var existed = await _context.AboutTeams.Include(b => b.AboutPosition).Skip(page * 6).Take(6).ToListAsync();
 
 
             return View(existed);

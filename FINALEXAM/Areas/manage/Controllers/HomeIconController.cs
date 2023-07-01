@@ -1,6 +1,7 @@
 ﻿using FINALEXAM.DAL;
 using FINALEXAM.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace FINALEXAM.Areas.manage.Controllers
@@ -16,10 +17,11 @@ namespace FINALEXAM.Areas.manage.Controllers
             _context = context;
             _env = env;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page)
         {
-
-            var existed = await _context.HomeIcons.ToListAsync();
+            ViewBag.Page = page;
+            ViewBag.Total = Math.Ceiling((decimal)_context.HomeProperties.Count() / 6);
+            var existed = await _context.HomeIcons.Skip(page * 6).Take(6).ToListAsync();
 
 
             return View(existed);

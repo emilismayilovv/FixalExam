@@ -1,0 +1,42 @@
+﻿@using FINALEXAM.Models;
+@model ContactUs
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Basic form elements</h4>
+            <p class="card-description">
+                Basic form elements
+            </p>
+            <form class="forms-sample" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="Title">Title</label>
+                    <input asp-for=Title class="form-control" placeholder="Title">
+                    <span asp-validation-for="Title"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SubTitle1">SubTitle1</label>
+                    <input asp-for=SubTitle1 class="form-control" placeholder="SubTitle1">
+                    <span asp-validation-for="SubTitle1"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SubTitle2">SubTitle2</label>
+                    <input asp-for=SubTitle2 class="form-control" placeholder="SubTitle2">
+                    <span asp-validation-for="SubTitle2"></span>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label asp-for="Photo">Name</label>
+                    <input asp-for=Photo class="form-control" placeholder="Photo">
+                    <span asp-validation-for="Photo"></span>
+                </div>
+
+
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <button asp-controller="contactus" asp-action="index" class="btn btn-light">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>

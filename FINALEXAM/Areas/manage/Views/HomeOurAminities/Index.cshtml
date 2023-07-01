@@ -44,6 +44,22 @@
                                 </td>
                             </tr>
                         }
+                        <div class="ltn__pagination">
+                            <ul>
+                                @if (ViewBag.Page > 0)
+                                {
+                                    <a asp-action="index" asp-controller="homeouraminities" asp-route-page="@(ViewBag.Page-1)" type="button" class="btn btn-secondary ">Previous</a>
+                                }
+                                @for (int i = 0; i < ViewBag.Total; i++)
+                                {
+                                    <a asp-action="index" asp-controller="homeouraminities" asp-route-page="@(i)" type="button" class="btn btn-secondary @(i==ViewBag.Page?"disabled":"")">@(i + 1)</a>
+                                }
+                                @if (ViewBag.Page + 1 < ViewBag.Total)
+                                {
+                                    <a asp-action="index" asp-controller="homeouraminities" asp-route-page="@(ViewBag.Page+1)" type="button" class="btn btn-secondary">Next</a>
+                                }
+                            </ul>
+                        </div>
 
                     </tbody>
                 </table>

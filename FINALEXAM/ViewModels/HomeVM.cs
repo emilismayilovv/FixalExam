@@ -9,5 +9,6 @@ namespace FINALEXAM.ViewModels
         public List<HomeOurService> OurServices { get;set; }
         public List<HomeProperti> Properti { get;set; }
         public List<HomeSlider> Slider { get;set; }
+        public HomeProperti Lastproperty { get;set; }
     }
 }

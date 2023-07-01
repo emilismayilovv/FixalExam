@@ -197,6 +197,34 @@ namespace FINALEXAM.Migrations
                     b.ToTable("BasketItems");
                 });
 
+            modelBuilder.Entity("FINALEXAM.Models.ContactUs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubTitle1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubTitle2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContactUs");
+                });
+
             modelBuilder.Entity("FINALEXAM.Models.HomeIcon", b =>
                 {
                     b.Property<int>("Id")
@@ -281,7 +309,7 @@ namespace FINALEXAM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AboutTeamId")
+                    b.Property<int?>("AboutTeamId")
                         .HasColumnType("int");
 
                     b.Property<int>("BathRoomNumbers")
@@ -293,6 +321,9 @@ namespace FINALEXAM.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("HomeTypeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
@@ -310,6 +341,8 @@ namespace FINALEXAM.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AboutTeamId");
+
+                    b.HasIndex("HomeTypeId");
 
                     b.ToTable("HomeProperties");
                 });
@@ -340,6 +373,23 @@ namespace FINALEXAM.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("HomeSliders");
+                });
+
+            modelBuilder.Entity("FINALEXAM.Models.HomeType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("HouseType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HomeTypes");
                 });
 
             modelBuilder.Entity("FINALEXAM.Models.Order", b =>
@@ -570,11 +620,15 @@ namespace FINALEXAM.Migrations
                 {
                     b.HasOne("FINALEXAM.Models.AboutTeam", "AboutTeam")
                         .WithMany("HomeProperti")
-                        .HasForeignKey("AboutTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AboutTeamId");
+
+                    b.HasOne("FINALEXAM.Models.HomeType", "HomeType")
+                        .WithMany("homePropertis")
+                        .HasForeignKey("HomeTypeId");
 
                     b.Navigation("AboutTeam");
+
+                    b.Navigation("HomeType");
                 });
 
             modelBuilder.Entity("FINALEXAM.Models.Order", b =>
@@ -660,6 +714,11 @@ namespace FINALEXAM.Migrations
             modelBuilder.Entity("FINALEXAM.Models.AppUser", b =>
                 {
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("FINALEXAM.Models.HomeType", b =>
+                {
+                    b.Navigation("homePropertis");
                 });
 
             modelBuilder.Entity("FINALEXAM.Models.Order", b =>

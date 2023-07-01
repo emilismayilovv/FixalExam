@@ -28,6 +28,7 @@ namespace FINALEXAM.Controllers
             vm.OurServices=homeOurServices;
             vm.Slider=homeSliders;
             vm.Properti=homePropertis;
+            vm.Lastproperty = _context.HomeProperties.OrderByDescending(x => x.Id).FirstOrDefault();
 
             return View(vm);
         }

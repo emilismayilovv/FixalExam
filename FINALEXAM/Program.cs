@@ -1,5 +1,7 @@
 using System;
+using System.Configuration;
 using FINALEXAM.DAL;
+using FINALEXAM.Interfaces;
 using FINALEXAM.Models;
 using FINALEXAM.Services;
 using Microsoft.AspNetCore.Identity;
@@ -23,12 +25,17 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
     opt.Lockout.AllowedForNewUsers = true;
     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(60);
     opt.Lockout.MaxFailedAccessAttempts = 5;
+
+    opt.SignIn.RequireConfirmedEmail = true;
 }).AddDefaultTokenProviders().AddEntityFrameworkStores<AppDBContext>();
 
 
 builder.Services.AddDbContext<AppDBContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<LayoutService>();
+builder.Services.AddScoped<IEmailService,EmailService>();
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("Email"));
+builder.Services.AddTransient<IMailService,MailService>();
 
 
 var app = builder.Build();

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using FINALEXAM.Utilities.Extensions;
 using FINALEXAM.DAL;
 using Microsoft.EntityFrameworkCore;
+using FINALEXAM.Interfaces;
+
 
 namespace FINALEXAM.Controllers
 {
@@ -16,27 +18,31 @@ namespace FINALEXAM.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IWebHostEnvironment _env;
         private readonly AppDBContext _context;
+        private readonly IEmailService _emailService;
+        private readonly IMailService _mailService;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,RoleManager<IdentityRole> roleManager, IWebHostEnvironment env, AppDBContext context)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IWebHostEnvironment env, AppDBContext context, IEmailService emailService, IMailService mailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _env = env;
             _context = context;
+            _emailService = emailService;
+            _mailService = mailService;
         }
 
         public async Task<IActionResult> OrderMember()
         {
-          AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-          List<Order> orders = await _context.Orders.Where(o=>o.AppUserId == user.Id).ToListAsync();
+            AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+            List<Order> orders = await _context.Orders.Where(o => o.AppUserId == user.Id).ToListAsync();
 
             return View(orders);
         }
 
         public async Task<IActionResult> OrderSeller()
         {
-            AboutTeam aboutTeam = _context.AboutTeams.Include(o=>o.Order).FirstOrDefault(ab => ab.Username == User.Identity.Name);
+            AboutTeam aboutTeam = _context.AboutTeams.Include(o => o.Order).FirstOrDefault(ab => ab.Username == User.Identity.Name);
 
             return View(aboutTeam);
         }
@@ -57,7 +63,7 @@ namespace FINALEXAM.Controllers
 
         public async Task<IActionResult> Edit(Order order)
         {
-            
+
             var result = await _context.Orders.FirstOrDefaultAsync(b => b.Id == order.Id);
 
             if (result == null)
@@ -66,12 +72,10 @@ namespace FINALEXAM.Controllers
                 return View();
             }
 
-            
 
-            
-            result.Status= order.Status;
-            
 
+
+            result.Status = order.Status;
 
             await _context.SaveChangesAsync();
 
@@ -104,7 +108,7 @@ namespace FINALEXAM.Controllers
         {
             /*ViewBag.AboutTeams = await _context.AboutTeams.ToListAsync();*/
 
-            
+
 
             if (homeProperti == null) return BadRequest();
 
@@ -121,8 +125,8 @@ namespace FINALEXAM.Controllers
 
             homeProperti.Image = await homeProperti.Photo.CreateFileAsync(_env.WebRootPath, "assets/img");
             AboutTeam aboutTeam = _context.AboutTeams.FirstOrDefault(ab => ab.Username == User.Identity.Name);
-            
-            
+
+
 
             if (aboutTeam == null)
             {
@@ -181,7 +185,7 @@ namespace FINALEXAM.Controllers
                 return View();
             }
 
-            if(newUser.Photo is null)
+            if (newUser.Photo is null)
             {
                 ModelState.AddModelError("Image", "Image can not be null");
                 return View();
@@ -205,12 +209,12 @@ namespace FINALEXAM.Controllers
                 Surname = newUser.Surname,
                 UserName = newUser.Name,
                 Email = newUser.Email,
-                PhoneNumber=newUser.Phone,
+                PhoneNumber = newUser.Phone,
                 IsSeller = newUser.IsSeller,
                 Image = await newUser.Photo.CreateFileAsync(_env.WebRootPath, "assets/img"),
 
             };
-            var result=await _userManager.CreateAsync(member,newUser.Password);
+            var result = await _userManager.CreateAsync(member, newUser.Password);
             /*if (!result.Succeeded)
             {
                 foreach(var item in result.Errors)
@@ -232,12 +236,12 @@ namespace FINALEXAM.Controllers
                     Phone = newUser.Phone,
                     Image = await newUser.Photo.CreateFileAsync(_env.WebRootPath, "assets/img"),
                     HomeProperti = new List<HomeProperti>(),
-                    AboutPositionId=newUser.PositionId,
-                    Username=member.UserName
+                    AboutPositionId = newUser.PositionId,
+                    Username = member.UserName
 
                 };
 
-                await  _context.AboutTeams.AddAsync(team);
+                await _context.AboutTeams.AddAsync(team);
                 await _context.SaveChangesAsync();
             }
             else
@@ -246,9 +250,14 @@ namespace FINALEXAM.Controllers
             }
             await _signInManager.SignInAsync(member, true);
 
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(member);
+            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { token, Email = member.Email }, Request.Scheme);
+
+            await _emailService.SendMail(member.Email, "Email Confirmation", confirmationLink);
 
 
-            return RedirectToAction("Index", "Home"); 
+
+            return RedirectToAction("SuccesfullyRegistered", "Account");
 
             /*AppUser user = new AppUser
             {
@@ -275,6 +284,31 @@ namespace FINALEXAM.Controllers
         }
 
 
+
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            AppUser user = await _userManager.FindByEmailAsync(email);
+            if (user == null) return NotFound();
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (!result.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            await _signInManager.SignInAsync(user, false);
+
+            return View();
+        }
+
+
+        public IActionResult SuccesfullyRegistered()
+        {
+            return View();
+        }
+
+
+
+
         public IActionResult Login()
         {
             return View();
@@ -283,7 +317,7 @@ namespace FINALEXAM.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> Login(LoginVM user,string? ReturnUrl)
+        public async Task<IActionResult> Login(LoginVM user, string? ReturnUrl)
         {
             if (!ModelState.IsValid) { return View(); }
 
@@ -293,19 +327,25 @@ namespace FINALEXAM.Controllers
                 existed = await _userManager.FindByNameAsync(user.UsernameOrEmail);
                 if (existed == null)
                 {
-                    ModelState.AddModelError("", "Username or Email wrpng");
+                    ModelState.AddModelError("", "Username or Email wrong");
                     return View();
                 }
             }
 
             var result = await _signInManager.PasswordSignInAsync(existed, user.Password, false, false);
 
+            if (!existed.EmailConfirmed)
+            {
+                ModelState.AddModelError("", "Please Confirm Your Email");
+                return View();
+            }
+
             if (!result.Succeeded)
             {
                 ModelState.AddModelError("", "Username,Email or Password is not correct");
                 return View();
             }
-            if(ReturnUrl!= null)
+            if (ReturnUrl != null)
             {
 
                 return Redirect(ReturnUrl);
@@ -326,11 +366,113 @@ namespace FINALEXAM.Controllers
 
         public async Task<IActionResult> CreateRoles()
         {
-            foreach(var item in Enum.GetValues(typeof(UserRole)))
+            foreach (var item in Enum.GetValues(typeof(UserRole)))
             {
                 await _roleManager.CreateAsync(new IdentityRole { Name = item.ToString() });
             }
             return RedirectToAction("Index", "Home");
         }
-    }
+
+
+
+
+
+
+
+
+        public IActionResult ForgotPassword()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordVM forgotPasswordVM)
+        {
+            if (!ModelState.IsValid) return View(forgotPasswordVM);
+
+            var user = await _userManager.FindByEmailAsync(forgotPasswordVM.Email);
+            if (user == null) return NotFound();
+
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            string link = Url.Action("ResetPassword", "Account", new { userId = user.Id, token = token }, HttpContext.Request.Scheme);
+
+            string body = $@"<!DOCTYPE html>
+                                         <html>
+                                         <head>
+                                             <title>Security Warning</title>
+                                             <style>
+                                                 body {{
+                                                     font-family: Arial, sans-serif;
+                                                     background-color: #f9f9f9;
+                                                     margin: 0;
+                                                     padding: 0;
+                                                 }}
+                                                 
+                                                 .container {{
+                                                     max-width: 600px;
+                                                     margin: 20px auto;
+                                                     background-color: #ffffff;
+                                                     padding: 20px;
+                                                     border-radius: 5px;
+                                                     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                                                 }}
+                                                 
+                                                 h1 {{
+                                                     font-size: 24px;
+                                                     color: #ff0000;
+                                                     margin-top: 0;
+                                                 }}
+                                                 
+                                                 p {{
+                                                     font-size: 16px;
+                                                     color: #333333;
+                                                 }}
+                                             </style>
+                                         </head>
+                                         <body>
+                                             <div class=""container"">
+                                                 <h1>Security Warning</h1>
+                                                 <p>You logged in on <span>{link}</span>.</p>
+                                             </div>
+                                         </body>
+                                         </html>
+                                         ";
+            await _emailService.SendMail(user.Email, "Reset Password", body, true);
+            return RedirectToAction(nameof(Login));
+        }
+
+
+
+        public async Task<IActionResult> ResetPassword(string userId, string token)
+        {
+            if (userId == null || token == null) return NotFound();
+            var user = _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            ResetPasswordVM resetVM = new ResetPasswordVM
+            {
+                userId = userId,
+                Token = token
+            };
+
+            return View(resetVM);
+
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordVM resetPasswordVM)
+        {
+            if (!ModelState.IsValid) return BadRequest();
+            var user =await  _userManager.FindByIdAsync(resetPasswordVM.userId);
+            if (user == null) return NotFound();
+            var identityuser = await _userManager.ResetPasswordAsync(user, resetPasswordVM.Token, resetPasswordVM.ConfirmPassword);
+
+            return RedirectToAction(nameof(Login));
+
+        }
+    } 
 }
+

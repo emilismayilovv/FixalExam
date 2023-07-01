@@ -20,6 +20,8 @@ namespace FINALEXAM.DAL
         public DbSet<Setting> Settings { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<ContactUs> ContactUs { get; set; }
+        public DbSet<HomeType> HomeTypes { get; set; }
 
     }
 }

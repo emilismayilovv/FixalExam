@@ -14,6 +14,8 @@ namespace FINALEXAM.Models
         public string? Image { get; set; }
         public AboutTeam? AboutTeam { get; set; }
         public int? AboutTeamId { get; set; }
+        public int? HomeTypeId { get; set; }
+        public HomeType? HomeType { get; set; }
         [NotMapped]
         public IFormFile Photo { get; set; }
     }
